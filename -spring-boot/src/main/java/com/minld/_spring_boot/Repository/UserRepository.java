@@ -1,0 +1,17 @@
+package com.minld._spring_boot.Repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.minld._spring_boot.entity.User;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, String> {
+    boolean existsByEmail(String email);
+
+    Optional<User> findByEmail(String email);
+    // Optional  dùng để biểu thị một giá trị có thể tồn tại hoặc không
+
+}

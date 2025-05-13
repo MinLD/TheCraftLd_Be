@@ -1,0 +1,18 @@
+package com.minld._spring_boot.mapper;
+
+import com.minld._spring_boot.dto.request.PermissionRequest;
+import com.minld._spring_boot.dto.request.UserCreationRequest;
+import com.minld._spring_boot.dto.request.UserUpdationRequest;
+import com.minld._spring_boot.dto.response.PermissionResponse;
+import com.minld._spring_boot.dto.response.UserResponse;
+import com.minld._spring_boot.entity.Permission;
+import com.minld._spring_boot.entity.User;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+
+@Mapper(componentModel = "spring")
+public interface PermissionMapper {
+    Permission toPermission(PermissionRequest request);
+
+    PermissionResponse toPermissionResponse(Permission permission);
+}

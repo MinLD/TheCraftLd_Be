@@ -1,0 +1,48 @@
+package com.minld._spring_boot.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.minld._spring_boot.Repository.PermissionReponsitory;
+import com.minld._spring_boot.dto.request.PermissionRequest;
+import com.minld._spring_boot.dto.response.PermissionResponse;
+import com.minld._spring_boot.entity.Permission;
+import com.minld._spring_boot.mapper.PermissionMapper;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class PermissionService {
+    PermissionReponsitory permissionReponsitory;
+    PermissionMapper permissionMapper;
+
+    public PermissionResponse create(PermissionRequest request) {
+        Permission permission = permissionMapper.toPermission(request);
+        // đoạn code này đang "đổ" (hoặc ánh xạ) dữ liệu từ request sang Permission.
+        permission = permissionReponsitory.save(permission);
+        return permissionMapper.toPermissionResponse(permission);
+    }
+
+    public List<PermissionResponse> getAll() {
+        var permissions = permissionReponsitory.findAll();
+
+        return permissions.stream().map(permissionMapper::toPermissionResponse).toList();
+        // permissions.stream():
+        // -Chuyển danh sách permissions thành một Stream để xử lý dữ liệu theo kiểu
+        // functional programming.
+
+        // .toList(): Chuyển Stream thành một List<PermissionResponse>
+        // (danh sách các đối tượng PermissionResponse).
+    }
+
+    public void delete(String perString) {
+        permissionReponsitory.deleteById(perString);
+    }
+}

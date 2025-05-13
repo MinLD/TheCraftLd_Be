@@ -1,0 +1,23 @@
+package com.minld._spring_boot.mapper;
+
+import com.minld._spring_boot.dto.request.PermissionRequest;
+import com.minld._spring_boot.dto.request.RoleRequest;
+import com.minld._spring_boot.dto.response.PermissionResponse;
+import com.minld._spring_boot.dto.response.RoleResponse;
+import com.minld._spring_boot.entity.Permission;
+import com.minld._spring_boot.entity.Role;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(componentModel = "spring")
+public interface RoleMapper {
+    @Mapping(target = "permissions", ignore = true) // bỏ qua field permissions
+    Role toRole(RoleRequest request);
+
+    RoleResponse toRoleResponse(Role role);
+
+    // Phương thức ánh xạ Role thành String (dựa trên thuộc tính name của Role)
+    default String map(Role role) {
+        return role.getName(); // Giả sử Role có phương thức getName() trả về String
+    }
+}

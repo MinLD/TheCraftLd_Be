@@ -1,0 +1,5 @@
+package com.minld._spring_boot.Repository;
+
+public interface RoleReponsitory  {
+
+}

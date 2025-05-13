@@ -1,0 +1,32 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /identity
+
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/identity_Service"
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  signerKey: "6YUm52gxihxIG6pO9srjCP7QeQ+C5JsspRXWqAFctVJBCylVXOd6PpAUWl8xUf1u"
+  valid-duration: 3600 #In seconds
+  refreshable-duration: 360000 #In seconds
+
+spring.mail.host: smtp.gmail.com
+spring.mail.port: 587
+spring.mail.username: luanek1702@gmail.com
+spring.mail.password: irjqwxbdmchpycws
+spring.mail.properties.mail.smtp.starttls.enable: true
+spring.mail.properties.mail.smtp.auth: true
+
+
+
+
+
+
