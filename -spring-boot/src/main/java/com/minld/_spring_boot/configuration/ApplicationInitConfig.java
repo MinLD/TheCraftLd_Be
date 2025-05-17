@@ -37,6 +37,15 @@ public class ApplicationInitConfig {
                                 .description("User role")
                                 .build()
                 );
+
+                roleReponsitory.save(
+                        Role.builder()
+                                .name(PredefindRole.SELLER_ROLE)
+                                .description("Seller role")
+                                .build()
+                );
+
+
                 Role adminRole = roleReponsitory.save(
                         Role.builder()
                                 .name(PredefindRole.ADMIN_ROLE)

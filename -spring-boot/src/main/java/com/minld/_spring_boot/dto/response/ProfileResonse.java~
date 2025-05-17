@@ -13,11 +13,11 @@ import java.time.LocalDate;
 public class ProfileResonse {
         Long id;
         String fullName;
-      String email;
+        String email;
         String address;
         String city;
-       String country;
+        String country;
         String phone;
-      LocalDate dob;
-      String gender;
+        LocalDate dob;
+        String gender;
 }

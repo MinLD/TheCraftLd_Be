@@ -20,6 +20,11 @@ public enum ErrorCode {
     PROFILE_NOT_FOUND("Profile not found", 1009, HttpStatus.NOT_FOUND),
     EMAIL_SENDING_FAILED("Failed to send email", 1010, HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_CODE("Invalid code", 1011, HttpStatus.BAD_REQUEST),
+    UPLOAD_FAILED("Upload failed", 1012, HttpStatus.BAD_REQUEST),
+    SELLER_EXIST("Seller existed", 1013, HttpStatus.BAD_REQUEST),
+    SELLER_NOT_FOUND("Seller not found", 1014, HttpStatus.BAD_REQUEST),
+    CATEGORY_EXISTED("Category existed", 1015, HttpStatus.BAD_REQUEST),
+    CATEGORY_NOT_FOUND("Category not found", 1016, HttpStatus.NOT_FOUND),
     ;
 
     ErrorCode(String message, int code, HttpStatusCode statusCode) {

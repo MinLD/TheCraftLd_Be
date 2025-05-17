@@ -1,10 +1,12 @@
 package com.minld._spring_boot.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.minld._spring_boot.entity.MediaFile;
 import com.minld._spring_boot.validator.DobConstraint;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -30,4 +32,6 @@ public class ProfileUpdationRequest {
     LocalDate dob;
 
     String gender;
+
+     MultipartFile avatar;
 }

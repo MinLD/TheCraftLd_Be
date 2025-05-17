@@ -50,6 +50,7 @@ public class UserMapperImpl implements UserMapper {
         userResponse.isActive( user.getIsActive() );
         userResponse.profileUser( user.getProfileUser() );
         userResponse.roles( roleSetToRoleResponseSet( user.getRoles() ) );
+        userResponse.seller( user.getSeller() );
 
         return userResponse.build();
     }

@@ -1,5 +1,6 @@
 package com.minld._spring_boot.dto.response;
 
+import com.minld._spring_boot.entity.MediaFile;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,4 +21,5 @@ public class ProfileResonse {
         String phone;
         LocalDate dob;
         String gender;
+        MediaFile avatar;
 }

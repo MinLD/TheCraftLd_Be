@@ -11,6 +11,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Slf4j
 @RestController
 @RequestMapping("/profile")
@@ -19,11 +21,12 @@ import org.springframework.web.bind.annotation.*;
 public class ProfileController {
     ProfileService profileService;
     @PatchMapping("/{id}")
-    public ApiResponse<ProfileResonse> updateProfile(@PathVariable Long id, @RequestBody @Valid ProfileUpdationRequest request) {
+    public ApiResponse<ProfileResonse> updateProfile(@PathVariable Long id, @ModelAttribute ProfileUpdationRequest request) throws IOException {
 
         return ApiResponse.<ProfileResonse>builder()
                 .result(profileService.update(id,request))
                 .build();
     }
+
 
 }
