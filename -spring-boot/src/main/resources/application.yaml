@@ -15,7 +15,7 @@ spring:
 
 jwt:
   signerKey: "6YUm52gxihxIG6pO9srjCP7QeQ+C5JsspRXWqAFctVJBCylVXOd6PpAUWl8xUf1u"
-  valid-duration: 3600 #In seconds
+  valid-duration: 360000 #In seconds
   refreshable-duration: 360000 #In seconds
 cloudinary:
   cloud-name: "dnkybihbi"
@@ -28,7 +28,7 @@ spring.mail.username: luanek1702@gmail.com
 spring.mail.password: irjqwxbdmchpycws
 spring.mail.properties.mail.smtp.starttls.enable: true
 spring.mail.properties.mail.smtp.auth: true
-
+  
 
 
 

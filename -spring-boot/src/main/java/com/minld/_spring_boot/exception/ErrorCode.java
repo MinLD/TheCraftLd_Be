@@ -25,6 +25,10 @@ public enum ErrorCode {
     SELLER_NOT_FOUND("Seller not found", 1014, HttpStatus.BAD_REQUEST),
     CATEGORY_EXISTED("Category existed", 1015, HttpStatus.BAD_REQUEST),
     CATEGORY_NOT_FOUND("Category not found", 1016, HttpStatus.NOT_FOUND),
+    ROLES_NOT_FOUND("Roles not found", 1017, HttpStatus.NOT_FOUND),
+    ADDRESS_NOT_FOUND("Address not found", 1018, HttpStatus.NOT_FOUND),
+    PRODUCT_NOT_FOUND("Product not found", 1019, HttpStatus.NOT_FOUND),
+    ATTRIBUTE_NOT_FOUND("Attribute not found", 1020, HttpStatus.NOT_FOUND),
     ;
 
     ErrorCode(String message, int code, HttpStatusCode statusCode) {

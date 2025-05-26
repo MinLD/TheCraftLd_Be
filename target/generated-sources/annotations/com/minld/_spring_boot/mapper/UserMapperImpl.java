@@ -66,6 +66,21 @@ public class UserMapperImpl implements UserMapper {
         user.setFullName( request.getFullName() );
     }
 
+    @Override
+    public User toAdminCreateUser(String email, String password, String fullName) {
+        if ( email == null && password == null && fullName == null ) {
+            return null;
+        }
+
+        User.UserBuilder user = User.builder();
+
+        user.email( email );
+        user.password( password );
+        user.fullName( fullName );
+
+        return user.build();
+    }
+
     protected PermissionResponse permissionToPermissionResponse(Permission permission) {
         if ( permission == null ) {
             return null;

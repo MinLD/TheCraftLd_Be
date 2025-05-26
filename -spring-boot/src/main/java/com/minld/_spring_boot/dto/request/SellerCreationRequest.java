@@ -19,6 +19,8 @@ public class SellerCreationRequest {
 
    String description;
 
+   String phone;
+
 
    private MultipartFile image;
 

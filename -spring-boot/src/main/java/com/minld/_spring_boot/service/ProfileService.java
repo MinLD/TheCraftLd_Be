@@ -45,13 +45,13 @@ public class ProfileService {
 
 
 
-        if (request.getAvatar() != null) {
-            MediaFile mediaFile = null;
-            mediaFile = cloudinaryService.updateFile((MultipartFile) request.getAvatar(), "profile", request.getCity());
-            log.info(mediaFile.getUrl());
-            mediaFile=mediaReponsitory.save(mediaFile);
-            profileUser.setAvatar(mediaFile);
-        }
+//        if (request.getAvatar() != null) {
+//            MediaFile mediaFile = null;
+//            mediaFile = cloudinaryService.updateFile((MultipartFile) request.getAvatar(), "profile", request.getCity());
+//            log.info(mediaFile.getUrl());
+//            mediaFile=mediaReponsitory.save(mediaFile);
+//            profileUser.setAvatar(mediaFile);
+//        }
 
 
 

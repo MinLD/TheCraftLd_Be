@@ -1,5 +1,6 @@
 package com.minld._spring_boot.dto.response;
 
+import com.minld._spring_boot.entity.MediaFile;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,4 +18,5 @@ public class CategoriesResponse {
     String description;
     LocalDate createdAt;
     LocalDate updatedAt;
+    MediaFile image;
 }

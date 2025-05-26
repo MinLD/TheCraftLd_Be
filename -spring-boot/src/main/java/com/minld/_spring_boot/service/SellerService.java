@@ -70,6 +70,7 @@ public class SellerService {
                 .description(request.getDescription())
                 .name(request.getName())
                 .taxCode(request.getTaxCode())
+                .phone(request.getPhone())
                 .build();
         sellerReponsitory.save(seller);
         HashSet<Role> roles = new HashSet<>();
@@ -77,20 +78,18 @@ public class SellerService {
         user.setRoles(roles);
         user.setSeller(seller);
         userRepository.save(user);
-        return new SellerResponse(seller.getId(), seller.getName(), seller.getDescription(), seller.getImage(), seller.getTaxCode(), seller.getCreatedAt(), seller.getUpdatedAt());
+        return new SellerResponse( seller.getId(), seller.getName(), seller.getDescription() , seller.getImage() ,seller.getPhone(),seller.getTaxCode(), seller.getCreatedAt(), seller.getUpdatedAt());
     }
 
-    public SellerResponse update(SellerUpdationRequest request) throws IOException {
+    public SellerResponse update(Long id, SellerUpdationRequest request) throws IOException {
 
-        var email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user =
-                userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        if(user.getSeller()==null)
-            throw new AppException(ErrorCode.SELLER_NOT_FOUND);
+     Seller seller = sellerReponsitory.findById(id).orElseThrow(() -> new AppException(ErrorCode.SELLER_NOT_FOUND));
+
+
         MediaFile mediaFile = null;
-        Seller seller = user.getSeller();
+
         if(request.getImage()!=null){
-            mediaFile = cloudinaryService.updateFile(request.getImage(), "seller", email);
+            mediaFile = cloudinaryService.updateFile(request.getImage(), "seller", String.valueOf(seller.getId()));
             mediaReponsitory.save(mediaFile);
             seller.setImage(mediaFile);
         }

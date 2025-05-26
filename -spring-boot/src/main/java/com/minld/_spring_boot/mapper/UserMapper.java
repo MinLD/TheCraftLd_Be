@@ -1,5 +1,7 @@
 package com.minld._spring_boot.mapper;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -19,4 +21,6 @@ public interface UserMapper {
 
     @Mapping(target = "roles", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdationRequest request);
+
+    User toAdminCreateUser(@Email(message = "EMAIL_INVALID") String email, @Size(min = 8, message = "PASSWORD_INVALID") String password, @Size(min = 3, message = "NAME_INVALID") String fullName);
 }

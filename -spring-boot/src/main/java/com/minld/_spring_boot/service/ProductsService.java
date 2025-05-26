@@ -3,24 +3,18 @@ package com.minld._spring_boot.service;
 import com.minld._spring_boot.Repository.CategoriesRepository;
 import com.minld._spring_boot.Repository.ProductsRepository;
 import com.minld._spring_boot.Repository.UserRepository;
-import com.minld._spring_boot.dto.request.CategoriesCreationRequest;
-import com.minld._spring_boot.dto.request.CategoriesUpdationRequest;
 import com.minld._spring_boot.dto.request.ProductsCreationRequest;
-import com.minld._spring_boot.dto.response.CategoriesResponse;
 import com.minld._spring_boot.dto.response.ProductsResponse;
-import com.minld._spring_boot.entity.Categories;
 import com.minld._spring_boot.entity.MediaFile;
 import com.minld._spring_boot.entity.Products;
 import com.minld._spring_boot.entity.User;
 import com.minld._spring_boot.exception.AppException;
 import com.minld._spring_boot.exception.ErrorCode;
-import com.minld._spring_boot.mapper.CategoriesMapper;
 import com.minld._spring_boot.mapper.ProductsMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,6 +74,12 @@ public class ProductsService {
         }
 
         Products products = Products.builder()
+                .style(request.getStyle())
+                .quantity(request.getQuantity())
+                .material(request.getMaterial())
+                .trademark(request.getTrademark())
+                .origin(request.getOrigin())
+
                 .sku(categories.getId())
                 .images(mediaFiles)
                 .title(request.getTitle())
@@ -120,6 +120,18 @@ public class ProductsService {
     public Void delete(Long id) {
         productsRepository.deleteById(id);
         return null;
+    }
+
+
+    public List<ProductsResponse> getProductsBySellerAndCategory(Long categoriesId) {
+        var email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        if (user.getSeller() == null) {
+            throw new AppException(ErrorCode.SELLER_EXIST);
+        }
+        var sellerId = user.getSeller().getId();
+        return productsRepository.findBySellerIdAndCategoriesId(sellerId, categoriesId).stream().map(productsMapper::toProductsResponse).toList();
     }
 
 

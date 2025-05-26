@@ -21,5 +21,5 @@ public class ProfileResonse {
         String phone;
         LocalDate dob;
         String gender;
-        MediaFile avatar;
+//        MediaFile avatar;
 }

@@ -22,6 +22,8 @@ public class SellerResponse {
 
    MediaFile image;
 
+   String phone;
+
    private String taxCode; // Mã số thuế (nếu có)
 
    private LocalDate createdAt; // Ngày tạo công ty

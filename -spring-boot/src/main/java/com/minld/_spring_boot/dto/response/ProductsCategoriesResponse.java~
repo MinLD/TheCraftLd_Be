@@ -1,0 +1,37 @@
+package com.minld._spring_boot.dto.response;
+
+import com.minld._spring_boot.entity.Categories;
+import com.minld._spring_boot.entity.MediaFile;
+import com.minld._spring_boot.entity.Seller;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Set;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class ProductsResponse {
+    Long id;
+
+    String title;
+
+    String description;
+
+    Double price;
+
+    Double discount;
+
+    Long sku;
+
+    Set<MediaFile> images;
+
+    Seller seller;
+
+
+
+
+}

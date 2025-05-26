@@ -3,11 +3,9 @@ package com.minld._spring_boot.mapper;
 import com.minld._spring_boot.dto.request.ProfileCreationRequest;
 import com.minld._spring_boot.dto.request.ProfileUpdationRequest;
 import com.minld._spring_boot.dto.response.ProfileResonse;
-import com.minld._spring_boot.entity.MediaFile;
 import com.minld._spring_boot.entity.ProfileUser;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
@@ -47,7 +45,6 @@ public class ProfileMapperImpl implements ProfileMapper {
         profileResonse.phone( profileUser.getPhone() );
         profileResonse.dob( profileUser.getDob() );
         profileResonse.gender( profileUser.getGender() );
-        profileResonse.avatar( profileUser.getAvatar() );
 
         return profileResonse.build();
     }
@@ -78,18 +75,6 @@ public class ProfileMapperImpl implements ProfileMapper {
         }
         if ( request.getGender() != null ) {
             profileUser.setGender( request.getGender() );
-        }
-        if ( request.getAvatar() != null ) {
-            if ( profileUser.getAvatar() == null ) {
-                profileUser.setAvatar( MediaFile.builder().build() );
-            }
-            multipartFileToMediaFile( request.getAvatar(), profileUser.getAvatar() );
-        }
-    }
-
-    protected void multipartFileToMediaFile(MultipartFile multipartFile, MediaFile mappingTarget) {
-        if ( multipartFile == null ) {
-            return;
         }
     }
 }

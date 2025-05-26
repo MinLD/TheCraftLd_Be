@@ -21,9 +21,16 @@ public class Categories {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = "name" , nullable = false)
     String name;
 
+
+    @Column(name = "description" , nullable = true)
     String description;
+
+    @OneToOne
+    @JoinColumn(name = "file_id" , nullable = true)
+    MediaFile image;
 
      LocalDate createdAt;
      LocalDate updatedAt;

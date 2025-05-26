@@ -2,21 +2,21 @@ package com.minld._spring_boot.controller;
 
 import com.minld._spring_boot.dto.request.CategoriesCreationRequest;
 import com.minld._spring_boot.dto.request.CategoriesUpdationRequest;
-import com.minld._spring_boot.dto.request.SellerCreationRequest;
-import com.minld._spring_boot.dto.request.SellerUpdationRequest;
+
 import com.minld._spring_boot.dto.response.ApiResponse;
 import com.minld._spring_boot.dto.response.CategoriesResponse;
 import com.minld._spring_boot.dto.response.ProductsResponse;
-import com.minld._spring_boot.dto.response.SellerResponse;
+
 import com.minld._spring_boot.service.CategoriesService;
-import com.minld._spring_boot.service.SellerService;
+
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+
 import java.util.List;
 
 @Slf4j
@@ -28,7 +28,7 @@ public class CategoriesController {
     CategoriesService categoriesService;
 
     @PostMapping()
-    public ApiResponse<CategoriesResponse> create(@RequestBody CategoriesCreationRequest request)  {
+    public ApiResponse<CategoriesResponse> create( @Valid @ModelAttribute CategoriesCreationRequest request)  {
         return ApiResponse.<CategoriesResponse>builder().result(categoriesService.create(request)).build();
     }
 
@@ -44,7 +44,7 @@ public class CategoriesController {
     }
 
     @PatchMapping("/{id}")
-    public ApiResponse<CategoriesResponse> update(@PathVariable Long id, @RequestBody CategoriesUpdationRequest request)  {
+    public ApiResponse<CategoriesResponse> update(@PathVariable Long id, @ModelAttribute CategoriesUpdationRequest request)  {
         return ApiResponse.<CategoriesResponse>builder().result(categoriesService.update(id, request)).build();
     }
 

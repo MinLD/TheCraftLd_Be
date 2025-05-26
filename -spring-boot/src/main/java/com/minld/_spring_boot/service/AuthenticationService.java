@@ -111,6 +111,7 @@ public class AuthenticationService {
                 token(token)
                 .authenticated(true)
                 .isActive(user.getIsActive())
+                .isSeller(user.getRoles().stream().anyMatch(role -> role.getName().equals("SELLER")))
                 .build();
     }
 

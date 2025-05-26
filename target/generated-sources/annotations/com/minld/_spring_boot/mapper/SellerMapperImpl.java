@@ -27,6 +27,7 @@ public class SellerMapperImpl implements SellerMapper {
         seller.description( request.getDescription() );
         seller.taxCode( request.getTaxCode() );
         seller.image( multipartFileToMediaFile( request.getImage() ) );
+        seller.phone( request.getPhone() );
         seller.updatedAt( request.getUpdatedAt() );
 
         return seller.build();
@@ -44,6 +45,7 @@ public class SellerMapperImpl implements SellerMapper {
         sellerResponse.name( seller.getName() );
         sellerResponse.description( seller.getDescription() );
         sellerResponse.image( seller.getImage() );
+        sellerResponse.phone( seller.getPhone() );
         sellerResponse.taxCode( seller.getTaxCode() );
         sellerResponse.createdAt( seller.getCreatedAt() );
         sellerResponse.updatedAt( seller.getUpdatedAt() );
@@ -71,6 +73,9 @@ public class SellerMapperImpl implements SellerMapper {
                 seller.setImage( MediaFile.builder().build() );
             }
             multipartFileToMediaFile1( request.getImage(), seller.getImage() );
+        }
+        if ( request.getPhone() != null ) {
+            seller.setPhone( request.getPhone() );
         }
         if ( request.getUpdatedAt() != null ) {
             seller.setUpdatedAt( request.getUpdatedAt() );

@@ -16,6 +16,7 @@ public class SellerUpdationRequest {
 
    String description;
 
+   String phone;
 
    private MultipartFile image;
 

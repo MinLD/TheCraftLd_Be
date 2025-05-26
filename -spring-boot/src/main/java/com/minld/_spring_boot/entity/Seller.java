@@ -21,15 +21,21 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = "name", nullable = false)
     String name;
 
+    @Column(name = "description", nullable = false)
     String description;
 
+    @Column(name = "tax_code", nullable = false)
     String taxCode;
 
     @OneToOne
-    @JoinColumn(name = "file_id")
-    MediaFile image; // Ảnh logo công ty (Lưu trên Cloudinary)
+    @JoinColumn(name = "file_id" )
+    MediaFile image = null; // Ảnh logo công ty (Lưu trên Cloudinary)
+
+    @Column(name = "phone")
+    String phone= null;
 
     @OneToOne()
     @JsonBackReference
@@ -45,6 +51,10 @@ public class Seller {
     @OneToMany(mappedBy = "seller",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     Set<Products> products;
+
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    Set<Address> addresses;
 
 }
 

@@ -37,8 +37,8 @@ public class ProfileUser {
     private LocalDate dob;
     private String gender;
 
-    @OneToOne
-    @JoinColumn(name = "avatar_id")
-    MediaFile avatar;
+//    @OneToOne
+//    @JoinColumn(name = "avatar_id")
+//    MediaFile avatar;
 
 }

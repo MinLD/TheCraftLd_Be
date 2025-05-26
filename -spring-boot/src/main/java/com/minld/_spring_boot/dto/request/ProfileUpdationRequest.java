@@ -33,5 +33,5 @@ public class ProfileUpdationRequest {
 
     String gender;
 
-     MultipartFile avatar;
+//     MultipartFile avatar;
 }

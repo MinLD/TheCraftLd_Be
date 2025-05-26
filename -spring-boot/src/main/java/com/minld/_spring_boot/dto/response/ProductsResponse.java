@@ -1,5 +1,6 @@
 package com.minld._spring_boot.dto.response;
 
+import com.minld._spring_boot.entity.Attributes;
 import com.minld._spring_boot.entity.Categories;
 import com.minld._spring_boot.entity.MediaFile;
 import com.minld._spring_boot.entity.Seller;
@@ -27,9 +28,20 @@ public class ProductsResponse {
 
     Long sku;
 
+    String trademark;
+
+    String origin ;
+
+    String style;
+
+    Double quantity;
+
+    String  material;
+
     Set<MediaFile> images;
 
     Seller seller;
+
 
 
 

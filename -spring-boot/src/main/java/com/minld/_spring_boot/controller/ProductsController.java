@@ -13,8 +13,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -39,6 +43,13 @@ public class ProductsController {
         productsService.delete(id);
         return ApiResponse.<Void>builder()
                 .result(productsService.delete(id))
+                .build();
+    }
+
+    @GetMapping("/seller/{categoriesId}")
+    public ApiResponse<List<ProductsResponse>>  getProductsBySellerAndCategory( @PathVariable Long categoriesId) {
+        return ApiResponse.<List<ProductsResponse>>builder()
+                .result(productsService.getProductsBySellerAndCategory(categoriesId))
                 .build();
     }
 

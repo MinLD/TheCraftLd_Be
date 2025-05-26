@@ -1,15 +1,19 @@
 package com.minld._spring_boot.service;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
 
 import com.minld._spring_boot.Repository.ProfileReponsitory;
+import com.minld._spring_boot.Repository.SellerReponsitory;
 import com.minld._spring_boot.constant.PredefindRole;
 import com.minld._spring_boot.dto.request.ActiveUserRequest;
+import com.minld._spring_boot.dto.request.AdminCreationUsersRequest;
 import com.minld._spring_boot.entity.ProfileUser;
 import com.minld._spring_boot.entity.Role;
+import com.minld._spring_boot.entity.Seller;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +49,7 @@ public class UserService {
     ProfileReponsitory profileReponsitory;
     ProfileService profileService;
     EmailService emailService;
+    SellerReponsitory sellerReponsitory;
 
     public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -78,6 +83,56 @@ public class UserService {
 
         // Trả về UserResponse
         return userMapper.toUserResponse(savedUser);
+    }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public UserResponse createAdmin(AdminCreationUsersRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
+        }
+
+        User user = userMapper.toAdminCreateUser(request.getEmail(), request.getPassword(), request.getFullName());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setIsActive(true);
+
+        // Gán role
+        HashSet<Role> roles = new HashSet<>();
+
+            roleReponsitory.findById(request.getRole()).ifPresent(roles::add);
+            if(roles.isEmpty()) throw new AppException(ErrorCode.ROLES_NOT_FOUND);
+            user.setRoles(roles);
+        // Tạo ProfileUser
+        ProfileUser profileUser = ProfileUser.builder()
+                .email(request.getEmail())
+                .fullName(request.getFullName())
+                .city(request.getCity())
+                .address(request.getAddress())
+                .phone(request.getPhone())
+                .country(request.getCountry())
+                .dob(request.getDob())
+                .gender(request.getGender())
+                .user(user) // Thiết lập mối quan hệ
+                .build();
+        // Gán ProfileUser cho User
+        user.setProfileUser(profileUser);
+
+        userRepository.save(user);
+        if ("SELLER".equals(request.getRole())) { // So sánh tên role
+            Seller seller = sellerReponsitory.save(Seller.builder()
+                    .createdAt(LocalDate.now())
+                    .image(null)
+                    .updatedAt(LocalDate.now())
+                    .description("Chưa cập nhật")
+                    .name("Chưa cập nhật")
+                    .taxCode("Chưa cập nhật")
+                    .user(user)
+                    .build());
+            user.setSeller(seller);
+            log.info("Seller created: {}", seller);
+        }
+
+
+        return userMapper.toUserResponse(userRepository.save(user));
+
     }
 
     public String sendCodeUser(String email) {
@@ -113,6 +168,7 @@ public class UserService {
                 userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         return userMapper.toUserResponse(user);
     }
+
     //    @PreAuthorize("hasAuthority('TAO')")
         @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserResponse> getUsers() {
@@ -142,4 +198,6 @@ public class UserService {
     public void deleteUser(String userId) {
         userRepository.deleteById(userId);
     }
+
+
 }

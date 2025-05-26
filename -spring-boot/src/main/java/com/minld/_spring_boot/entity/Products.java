@@ -2,11 +2,13 @@ package com.minld._spring_boot.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,6 +31,16 @@ public class Products {
 
     Double discount;
 
+    String trademark;
+
+    String origin ;
+
+    String style;
+
+    Double quantity;
+
+    String  material;
+
     Long sku;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -42,10 +54,15 @@ public class Products {
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
+    @JsonBackReference
     Seller seller;
 
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "categories_id")
     Categories categories;
+
+    @OneToMany(mappedBy = "products",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    Set<Attributes> attributes = new HashSet<>();
 }

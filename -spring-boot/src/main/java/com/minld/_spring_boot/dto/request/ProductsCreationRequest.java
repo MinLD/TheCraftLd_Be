@@ -25,6 +25,17 @@ public class ProductsCreationRequest {
 
     Double discount;
 
+    String trademark;
+
+    String origin ;
+
+    String style;
+
+    Double quantity;
+
+    String  material;
+
     List<MultipartFile> images;
+
 
 }

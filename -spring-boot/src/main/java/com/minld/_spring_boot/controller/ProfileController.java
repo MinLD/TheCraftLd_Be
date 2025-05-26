@@ -21,7 +21,7 @@ import java.io.IOException;
 public class ProfileController {
     ProfileService profileService;
     @PatchMapping("/{id}")
-    public ApiResponse<ProfileResonse> updateProfile(@PathVariable Long id, @ModelAttribute ProfileUpdationRequest request) throws IOException {
+    public ApiResponse<ProfileResonse> updateProfile(@PathVariable Long id, @RequestBody ProfileUpdationRequest request) throws IOException {
 
         return ApiResponse.<ProfileResonse>builder()
                 .result(profileService.update(id,request))

@@ -25,6 +25,7 @@ public class ProductsCreationRequest {
 
     Double discount;
 
-    List<MultipartFile> image;
+    List<MultipartFile> images;
+
 
 }

@@ -1,8 +1,7 @@
 package com.minld._spring_boot.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.minld._spring_boot.entity.MediaFile;
 import com.minld._spring_boot.validator.DobConstraint;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -14,8 +13,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProfileUpdationRequest {
+public class AdminCreationUsersRequest {
+
+    @Email(message = "EMAIL_INVALID")
+    String email;
+
+    @Size(min = 8, message = "PASSWORD_INVALID")
+    String password;
 
     @Size(min = 3, message = "NAME_INVALID")
     String fullName;
@@ -32,5 +36,6 @@ public class ProfileUpdationRequest {
 
     String gender;
 
-     avatar;
+
+
 }

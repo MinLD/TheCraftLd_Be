@@ -30,6 +30,11 @@ public class ProductsMapperImpl implements ProductsMapper {
         products.description( request.getDescription() );
         products.price( request.getPrice() );
         products.discount( request.getDiscount() );
+        products.trademark( request.getTrademark() );
+        products.origin( request.getOrigin() );
+        products.style( request.getStyle() );
+        products.quantity( request.getQuantity() );
+        products.material( request.getMaterial() );
         products.images( multipartFileListToMediaFileSet( request.getImages() ) );
 
         return products.build();
@@ -49,6 +54,11 @@ public class ProductsMapperImpl implements ProductsMapper {
         productsResponse.price( products.getPrice() );
         productsResponse.discount( products.getDiscount() );
         productsResponse.sku( products.getSku() );
+        productsResponse.trademark( products.getTrademark() );
+        productsResponse.origin( products.getOrigin() );
+        productsResponse.style( products.getStyle() );
+        productsResponse.quantity( products.getQuantity() );
+        productsResponse.material( products.getMaterial() );
         Set<MediaFile> set = products.getImages();
         if ( set != null ) {
             productsResponse.images( new LinkedHashSet<MediaFile>( set ) );

@@ -110,7 +110,8 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().
                 token(token)
                 .authenticated(true)
-                .isActive(user.isActive())
+                .isActive(user.getIsActive())
+                .isSeller(user.getIsSeller()!=null && user.getIsSeller())
                 .build();
     }
 

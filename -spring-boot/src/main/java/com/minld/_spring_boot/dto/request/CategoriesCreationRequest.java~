@@ -1,8 +1,0 @@
-package com.minld._spring_boot.dto.request;
-
-
-public class CategoriesCreationRequest {
-    String name;
-
-    String description;
-}
