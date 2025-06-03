@@ -1,12 +1,14 @@
 package com.minld._spring_boot.dto.request;
 
-import com.minld._spring_boot.validator.DobConstraint;
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+
+import com.minld._spring_boot.validator.DobConstraint;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
 
 @Data
 @Builder
@@ -37,6 +39,4 @@ public class AdminCreationUsersRequest {
     String gender;
 
     String role;
-
-
 }

@@ -1,12 +1,7 @@
 package com.minld._spring_boot.mapper;
 
-import com.minld._spring_boot.dto.request.AttributesCreationRequest;
-import com.minld._spring_boot.entity.Attributes;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface AttributesValuesMapper {
-
-
-}
+public interface AttributesValuesMapper {}

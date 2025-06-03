@@ -53,6 +53,7 @@ public class AttributesMapperImpl implements AttributesMapper {
         attributesValueResponse.id( attributesValues.getId() );
         attributesValueResponse.name( attributesValues.getName() );
         attributesValueResponse.price( attributesValues.getPrice() );
+        attributesValueResponse.quantity( attributesValues.getQuantity() );
         attributesValueResponse.image( attributesValues.getImage() );
 
         return attributesValueResponse.build();

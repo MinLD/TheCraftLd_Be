@@ -1,15 +1,16 @@
 package com.minld._spring_boot.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+
+import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Getter
@@ -25,6 +26,7 @@ public class Products {
 
     String title;
 
+    @Column(length = 2000)
     String description;
 
     Double price;
@@ -33,18 +35,20 @@ public class Products {
 
     String trademark;
 
-    String origin ;
+    String origin;
 
     String style;
 
     Double quantity;
 
-    String  material;
+    String material;
 
     Long sku;
 
+    Long id_Seller;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<MediaFile>images;
+    Set<MediaFile> images;
 
     @Column(nullable = false)
     private LocalDate createdAt;
@@ -62,7 +66,7 @@ public class Products {
     @JoinColumn(name = "categories_id")
     Categories categories;
 
-    @OneToMany(mappedBy = "products",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     Set<Attributes> attributes = new HashSet<>();
 }

@@ -107,11 +107,12 @@ public class AuthenticationService {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
         var token = generateToken(user);
-        return AuthenticationResponse.builder().
-                token(token)
+        return AuthenticationResponse.builder()
+                .token(token)
                 .authenticated(true)
                 .isActive(user.getIsActive())
-                .isSeller(user.getRoles().stream().anyMatch(role -> role.getName().equals("SELLER")))
+                .isSeller(
+                        user.getRoles().stream().anyMatch(role -> role.getName().equals("SELLER")))
                 .build();
     }
 
@@ -145,8 +146,7 @@ public class AuthenticationService {
 
         var email = signJWT.getJWTClaimsSet().getSubject();
 
-        var user =
-                userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+        var user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
 
         var token = generateToken(user);
         return AuthenticationResponse.builder().token(token).authenticated(true).build();

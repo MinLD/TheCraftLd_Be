@@ -29,6 +29,15 @@ public enum ErrorCode {
     ADDRESS_NOT_FOUND("Address not found", 1018, HttpStatus.NOT_FOUND),
     PRODUCT_NOT_FOUND("Product not found", 1019, HttpStatus.NOT_FOUND),
     ATTRIBUTE_NOT_FOUND("Attribute not found", 1020, HttpStatus.NOT_FOUND),
+    DESCRIPTION_INVALID("Description must be at lest {min} characters", 1021, HttpStatus.BAD_REQUEST),
+    PRICE_INVALID("Price must be at lest {min} characters", 1022, HttpStatus.BAD_REQUEST),
+    QUANTITY_INVALID("Quantity must be at lest {min} characters", 1023, HttpStatus.BAD_REQUEST),
+    DISCOUNT_INVALID("Discount must be at lest {min} characters", 1024, HttpStatus.BAD_REQUEST),
+    TRADEMARK_INVALID("Trademark must be at lest {min} characters", 1025, HttpStatus.BAD_REQUEST),
+    ORIGIN_INVALID("Origin must be at lest {min} characters", 1026, HttpStatus.BAD_REQUEST),
+    STYLE_INVALID("Style must be at lest {min} characters", 1027, HttpStatus.BAD_REQUEST),
+    MATERIAL_INVALID("Material must be at lest {min} characters", 1028, HttpStatus.BAD_REQUEST),
+    MEDIA_NOT_FOUND("Media not found", 1029, HttpStatus.NOT_FOUND),
     ;
 
     ErrorCode(String message, int code, HttpStatusCode statusCode) {

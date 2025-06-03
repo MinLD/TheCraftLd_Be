@@ -1,5 +1,9 @@
 package com.minld._spring_boot.service;
 
+import java.io.IOException;
+
+import org.springframework.stereotype.Service;
+
 import com.minld._spring_boot.Repository.AttributesRepository;
 import com.minld._spring_boot.Repository.AttributesValueRepository;
 import com.minld._spring_boot.Repository.MediaReponsitory;
@@ -12,13 +16,11 @@ import com.minld._spring_boot.entity.*;
 import com.minld._spring_boot.exception.AppException;
 import com.minld._spring_boot.exception.ErrorCode;
 import com.minld._spring_boot.mapper.AttributesMapper;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @Slf4j
 @Service
@@ -32,14 +34,13 @@ public class AttributesService {
     CloudinaryService cloudinaryService;
     MediaReponsitory mediaReponsitory;
 
-
     public AttributesResponse CreateAttributes(Long id_Product, AttributesCreationRequest request) {
-        Products products = productsRepository.findById(id_Product).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+        Products products = productsRepository
+                .findById(id_Product)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
 
-        Attributes attributes = Attributes.builder()
-                .name(request.getName())
-                .products(products)
-                .build();
+        Attributes attributes =
+                Attributes.builder().name(request.getName()).products(products).build();
         attributes = attributesRepository.save(attributes);
 
         products.getAttributes().add(attributes);
@@ -47,33 +48,33 @@ public class AttributesService {
         productsRepository.save(products);
 
         return attributesMapper.toAttributesResponse(attributes);
-
     }
 
-
-    public AttributesValueResponse CreateAttributesValues(Long id_Attributes, AttributesValuesCreationRequest request) throws IOException {
-        Attributes attributes = attributesRepository.findById(id_Attributes).orElseThrow(() -> new AppException(ErrorCode.ATTRIBUTE_NOT_FOUND));
+    public AttributesValueResponse CreateAttributesValues(Long id_Attributes, AttributesValuesCreationRequest request)
+            throws IOException {
+        Attributes attributes = attributesRepository
+                .findById(id_Attributes)
+                .orElseThrow(() -> new AppException(ErrorCode.ATTRIBUTE_NOT_FOUND));
         AttributesValues attributesValues = AttributesValues.builder()
                 .name(request.getName())
                 .price(request.getPrice())
+                .quantity(request.getQuantity())
                 .attributes(attributes)
                 .build();
-        MediaFile mediaFile = null;
-        try {
-            mediaFile = cloudinaryService.updateFile(request.getImage(), "attributesValues", attributesValues.getName());
-            mediaReponsitory.save(mediaFile);
-        } catch (AppException e) {
-            throw new AppException(ErrorCode.UPLOAD_FAILED);
+        if (request.getImage() != null) {
+            MediaFile mediaFile = null;
+            try {
+                mediaFile = cloudinaryService.updateFile(
+                        request.getImage(), "attributesValues", attributesValues.getName());
+                mediaReponsitory.save(mediaFile);
+            } catch (AppException e) {
+                throw new AppException(ErrorCode.UPLOAD_FAILED);
+            }
+            attributesValues.setImage(mediaFile);
         }
-        attributesValues.setImage(mediaFile);
         attributesValues = attributesValuesRepository.save(attributesValues);
         attributes.getAttributesValues().add(attributesValues);
         attributesRepository.save(attributes);
         return attributesMapper.toAttributesValueResponse(attributesValues);
-
     }
-
-
-
-
 }

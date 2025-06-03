@@ -1,12 +1,12 @@
 package com.minld._spring_boot.Repository;
 
-import com.minld._spring_boot.entity.ProfileUser;
-import com.minld._spring_boot.entity.Role;
-import com.minld._spring_boot.entity.User;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import com.minld._spring_boot.entity.ProfileUser;
+import com.minld._spring_boot.entity.User;
 
 @Repository
 public interface ProfileReponsitory extends JpaRepository<ProfileUser, Long> {

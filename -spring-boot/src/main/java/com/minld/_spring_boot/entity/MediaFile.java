@@ -1,11 +1,13 @@
 package com.minld._spring_boot.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
-import lombok.*;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import lombok.*;
 
 @Entity
 @Table(name = "media_files") // 👈 Đổi tên bảng để tránh lỗi
@@ -30,6 +32,4 @@ public class MediaFile {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
-
-
 }

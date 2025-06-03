@@ -1,12 +1,11 @@
 package com.minld._spring_boot.dto.response;
 
+import java.time.LocalDate;
+
 import com.minld._spring_boot.entity.MediaFile;
-import jakarta.persistence.OneToMany;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 @Builder
@@ -14,19 +13,19 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SellerResponse {
-   Long id;
+    Long id;
 
-   String name;
+    String name;
 
-   String description;
+    String description;
 
-   MediaFile image;
+    MediaFile image;
 
-   String phone;
+    String phone;
 
-   private String taxCode; // Mã số thuế (nếu có)
+    private String taxCode; // Mã số thuế (nếu có)
 
-   private LocalDate createdAt; // Ngày tạo công ty
+    private LocalDate createdAt; // Ngày tạo công ty
 
-   private LocalDate updatedAt;
+    private LocalDate updatedAt;
 }

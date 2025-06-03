@@ -1,0 +1,46 @@
+package com.minld._spring_boot.service;
+
+import java.io.IOException;
+
+import org.springframework.stereotype.Service;
+
+import com.minld._spring_boot.Repository.*;
+import com.minld._spring_boot.dto.request.MediaUpdateRequest;
+import com.minld._spring_boot.dto.response.MediaResponse;
+import com.minld._spring_boot.entity.*;
+import com.minld._spring_boot.exception.AppException;
+import com.minld._spring_boot.exception.ErrorCode;
+import com.minld._spring_boot.mapper.MediaMapper;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class MediaService {
+    MediaReponsitory mediaRepository; // Sửa typo
+    CloudinaryService cloudinaryService;
+    MediaMapper mediaMapper;
+
+    public MediaResponse updateFile(MediaUpdateRequest request, Long id) {
+        MediaFile meidaFileCurrent =
+                mediaRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.MEDIA_NOT_FOUND));
+        MediaFile mediaFile = null;
+        if (request.getImages() != null) {
+            try {
+                mediaFile = cloudinaryService.updateFile(request.getImages(), "media", String.valueOf(id));
+                meidaFileCurrent.setUrl(mediaFile.getUrl());
+                meidaFileCurrent.setFileSize(mediaFile.getFileSize());
+
+            } catch (AppException | IOException e) {
+                throw new AppException(ErrorCode.UPLOAD_FAILED);
+            }
+        }
+
+        return mediaMapper.toMediaResponse(mediaRepository.save(meidaFileCurrent));
+    }
+}

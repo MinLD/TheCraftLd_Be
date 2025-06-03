@@ -1,11 +1,11 @@
 package com.minld._spring_boot.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Entity
 @Getter
@@ -35,12 +35,10 @@ public class Address {
     boolean isDefault = false;
 
     @Column(name = "is_type")
-    String isType ;
+    String isType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id", nullable = false)
     @JsonBackReference
     Seller seller;
-
-
 }

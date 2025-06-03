@@ -1,12 +1,10 @@
 package com.minld._spring_boot.dto.request;
 
-import java.time.LocalDate;
 import java.util.List;
-
-import com.minld._spring_boot.validator.DobConstraint;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

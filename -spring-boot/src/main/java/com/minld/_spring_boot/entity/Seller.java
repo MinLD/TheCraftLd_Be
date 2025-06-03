@@ -1,13 +1,15 @@
 package com.minld._spring_boot.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.time.LocalDate;
 import java.util.Set;
+
+import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Getter
@@ -31,11 +33,11 @@ public class Seller {
     String taxCode;
 
     @OneToOne
-    @JoinColumn(name = "file_id" )
+    @JoinColumn(name = "file_id")
     MediaFile image = null; // Ảnh logo công ty (Lưu trên Cloudinary)
 
     @Column(name = "phone")
-    String phone= null;
+    String phone = null;
 
     @OneToOne()
     @JsonBackReference
@@ -48,13 +50,11 @@ public class Seller {
     @Column(nullable = false)
     private LocalDate updatedAt; // Ngày cập nhật gần nhất
 
-    @OneToMany(mappedBy = "seller",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     Set<Products> products;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     Set<Address> addresses;
-
 }
-

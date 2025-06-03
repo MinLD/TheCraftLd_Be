@@ -1,14 +1,12 @@
 package com.minld._spring_boot.dto.response;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 import com.minld._spring_boot.entity.ProfileUser;
-import com.minld._spring_boot.entity.Role;
 import com.minld._spring_boot.entity.Seller;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.context.annotation.Profile;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +19,7 @@ public class UserResponse {
     String fullName;
     String code;
     Boolean isActive;
-    ProfileUser profileUser ;
+    ProfileUser profileUser;
     Set<RoleResponse> roles;
     Seller seller;
 }

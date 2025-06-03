@@ -1,13 +1,11 @@
 package com.minld._spring_boot.dto.request;
 
-import com.minld._spring_boot.entity.MediaFile;
-import jakarta.persistence.OneToMany;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import java.time.LocalDate;
+
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
-import java.util.Set;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
@@ -15,18 +13,17 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SellerCreationRequest {
-   String name;
+    String name;
 
-   String description;
+    String description;
 
-   String phone;
+    String phone;
 
+    private MultipartFile image;
 
-   private MultipartFile image;
+    private String taxCode; // Mã số thuế (nếu có)
 
-   private String taxCode; // Mã số thuế (nếu có)
+    private LocalDate createdAt; // Ngày tạo công ty
 
-   private LocalDate createdAt; // Ngày tạo công ty
-
-   private LocalDate updatedAt;
+    private LocalDate updatedAt;
 }

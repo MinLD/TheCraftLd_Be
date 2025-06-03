@@ -28,9 +28,21 @@ public class ProductsResponse {
 
     Long sku;
 
+    String trademark;
+
+    String origin ;
+
+    String style;
+
+    Double quantity;
+
+    String  material;
+
     Set<MediaFile> images;
 
-    Seller seller;
+    Set<Attributes> attributes;
+
+//    Seller seller;
 
 
 

@@ -5,28 +5,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-
-import com.minld._spring_boot.Repository.ProfileReponsitory;
-import com.minld._spring_boot.Repository.SellerReponsitory;
-import com.minld._spring_boot.constant.PredefindRole;
-import com.minld._spring_boot.dto.request.ActiveUserRequest;
-import com.minld._spring_boot.dto.request.AdminCreationUsersRequest;
-import com.minld._spring_boot.entity.ProfileUser;
-import com.minld._spring_boot.entity.Role;
-import com.minld._spring_boot.entity.Seller;
-import org.hibernate.validator.constraints.UUID;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.minld._spring_boot.Repository.ProfileReponsitory;
 import com.minld._spring_boot.Repository.RoleReponsitory;
+import com.minld._spring_boot.Repository.SellerReponsitory;
 import com.minld._spring_boot.Repository.UserRepository;
+import com.minld._spring_boot.constant.PredefindRole;
+import com.minld._spring_boot.dto.request.ActiveUserRequest;
+import com.minld._spring_boot.dto.request.AdminCreationUsersRequest;
 import com.minld._spring_boot.dto.request.UserCreationRequest;
 import com.minld._spring_boot.dto.request.UserUpdationRequest;
 import com.minld._spring_boot.dto.response.UserResponse;
+import com.minld._spring_boot.entity.ProfileUser;
+import com.minld._spring_boot.entity.Role;
+import com.minld._spring_boot.entity.Seller;
 import com.minld._spring_boot.entity.User;
 import com.minld._spring_boot.exception.AppException;
 import com.minld._spring_boot.exception.ErrorCode;
@@ -63,8 +59,6 @@ public class UserService {
         user.setIsActive(false);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-
-
         // Tạo ProfileUser
         ProfileUser profileUser = ProfileUser.builder()
                 .email(request.getEmail())
@@ -84,6 +78,7 @@ public class UserService {
         // Trả về UserResponse
         return userMapper.toUserResponse(savedUser);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public UserResponse createAdmin(AdminCreationUsersRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -97,9 +92,9 @@ public class UserService {
         // Gán role
         HashSet<Role> roles = new HashSet<>();
 
-            roleReponsitory.findById(request.getRole()).ifPresent(roles::add);
-            if(roles.isEmpty()) throw new AppException(ErrorCode.ROLES_NOT_FOUND);
-            user.setRoles(roles);
+        roleReponsitory.findById(request.getRole()).ifPresent(roles::add);
+        if (roles.isEmpty()) throw new AppException(ErrorCode.ROLES_NOT_FOUND);
+        user.setRoles(roles);
         // Tạo ProfileUser
         ProfileUser profileUser = ProfileUser.builder()
                 .email(request.getEmail())
@@ -130,9 +125,7 @@ public class UserService {
             log.info("Seller created: {}", seller);
         }
 
-
         return userMapper.toUserResponse(userRepository.save(user));
-
     }
 
     public String sendCodeUser(String email) {
@@ -145,10 +138,10 @@ public class UserService {
         return "Send code successfully";
     }
 
-
-
     public String ActiveUser(ActiveUserRequest request) {
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository
+                .findByEmail(request.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         if (!user.getCode().equals(request.getCode())) {
             throw new AppException(ErrorCode.INVALID_CODE);
         }
@@ -164,20 +157,19 @@ public class UserService {
 
     public UserResponse getMyInfo() {
         var email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user =
-                userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         return userMapper.toUserResponse(user);
     }
 
     //    @PreAuthorize("hasAuthority('TAO')")
-        @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserResponse> getUsers() {
         log.info("Get all users");
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
 
-//    @PostAuthorize("returnObject.email == authentication.name")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+    //    @PostAuthorize("returnObject.email == authentication.name")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public UserResponse getUser(String id) {
         return userMapper.toUserResponse(
                 userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
@@ -191,13 +183,10 @@ public class UserService {
         var roles = roleReponsitory.findAllById(request.getRoles());
         user.setRoles(new HashSet<>(roles));
 
-
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
     public void deleteUser(String userId) {
         userRepository.deleteById(userId);
     }
-
-
 }

@@ -1,7 +1,9 @@
 package com.minld._spring_boot.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -23,17 +25,15 @@ public class AttributesValues {
     @Column(name = "price", nullable = false)
     Double price;
 
+    @Column(name = "quantity", nullable = false)
+    Double quantity;
+
     @ManyToOne
     @JoinColumn(name = "attributes_id")
     @JsonBackReference
     Attributes attributes;
 
     @OneToOne
-    @JoinColumn(name = "file_id")
+    @JoinColumn(name = "file_id", nullable = true)
     MediaFile image;
-
-
-
-
-
 }

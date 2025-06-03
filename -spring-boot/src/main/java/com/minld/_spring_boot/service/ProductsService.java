@@ -1,9 +1,21 @@
 package com.minld._spring_boot.service;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.minld._spring_boot.Repository.CategoriesRepository;
 import com.minld._spring_boot.Repository.ProductsRepository;
 import com.minld._spring_boot.Repository.UserRepository;
 import com.minld._spring_boot.dto.request.ProductsCreationRequest;
+import com.minld._spring_boot.dto.request.ProductsUpdateRequest;
 import com.minld._spring_boot.dto.response.ProductsResponse;
 import com.minld._spring_boot.entity.MediaFile;
 import com.minld._spring_boot.entity.Products;
@@ -11,20 +23,11 @@ import com.minld._spring_boot.entity.User;
 import com.minld._spring_boot.exception.AppException;
 import com.minld._spring_boot.exception.ErrorCode;
 import com.minld._spring_boot.mapper.ProductsMapper;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -37,34 +40,31 @@ public class ProductsService {
 
     ProductsMapper productsMapper;
 
-
     ProductsRepository productsRepository;
 
     CloudinaryService cloudinaryService;
 
-
     public ProductsResponse create(Long id_Category, ProductsCreationRequest request) {
         var email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user =
-                userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        if(user.getSeller()==null)
-            throw new AppException(ErrorCode.SELLER_EXIST);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        if (user.getSeller() == null) throw new AppException(ErrorCode.SELLER_EXIST);
 
-        var categories = categoriesRepository.findById(id_Category).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        var categories = categoriesRepository
+                .findById(id_Category)
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
 
         var seller = user.getSeller();
 
-
         Set<MediaFile> mediaFiles = new HashSet<>();
-        if(request.getImages()!=null) {
-            try{
+        if (request.getImages() != null) {
+            try {
                 List<MediaFile> uploadedFiles = new ArrayList<>();
                 for (MultipartFile file : request.getImages()) {
                     MediaFile mediaFile = cloudinaryService.updateFile(file, "products", email);
                     uploadedFiles.add(mediaFile);
                 }
                 mediaFiles.addAll(uploadedFiles);
-            }catch (AppException e) {
+            } catch (AppException e) {
                 log.error("Error uploading image", e);
                 throw new AppException(ErrorCode.UPLOAD_FAILED);
             } catch (IOException e) {
@@ -79,7 +79,7 @@ public class ProductsService {
                 .material(request.getMaterial())
                 .trademark(request.getTrademark())
                 .origin(request.getOrigin())
-
+                .id_Seller(seller.getId())
                 .sku(categories.getId())
                 .images(mediaFiles)
                 .title(request.getTitle())
@@ -90,20 +90,26 @@ public class ProductsService {
                 .updatedAt(LocalDate.now())
                 .seller(seller)
                 .categories(categories)
-                        .build();
+                .build();
 
         productsRepository.save(products);
-
-
-
 
         return productsMapper.toProductsResponse(products);
     }
 
+    public ProductsResponse update(Long id_Product, ProductsUpdateRequest request) {
+        Products products = productsRepository
+                .findById(id_Product)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        productsMapper.updateProducts(products, request);
+
+        return productsMapper.toProductsResponse(productsRepository.save(products));
+    }
+
     public List<ProductsResponse> getAllProducts() {
         var email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         if (user.getSeller() == null) {
             throw new AppException(ErrorCode.SELLER_EXIST);
         }
@@ -112,9 +118,7 @@ public class ProductsService {
         var products = seller.getProducts();
 
         // Ánh xạ danh sách sản phẩm sang danh sách ProductsResponse
-        return products.stream()
-                .map(productsMapper::toProductsResponse)
-                .toList();
+        return products.stream().map(productsMapper::toProductsResponse).toList();
     }
 
     public Void delete(Long id) {
@@ -122,21 +126,18 @@ public class ProductsService {
         return null;
     }
 
-
     public List<ProductsResponse> getProductsBySellerAndCategory(Long categoriesId) {
         var email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         if (user.getSeller() == null) {
             throw new AppException(ErrorCode.SELLER_EXIST);
         }
         var sellerId = user.getSeller().getId();
-        return productsRepository.findBySellerIdAndCategoriesId(sellerId, categoriesId).stream().map(productsMapper::toProductsResponse).toList();
+        return productsRepository.findBySellerIdAndCategoriesId(sellerId, categoriesId).stream()
+                .map(productsMapper::toProductsResponse)
+                .toList();
     }
-
-
-
-
-
-
+    public ProductsResponse getProductsById(Long id) {
+        return productsMapper.toProductsResponse(productsRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND)));
+    }
 }

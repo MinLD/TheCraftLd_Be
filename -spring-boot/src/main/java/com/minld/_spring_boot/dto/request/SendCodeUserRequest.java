@@ -1,7 +1,7 @@
 package com.minld._spring_boot.dto.request;
 
-
 import jakarta.validation.constraints.Email;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

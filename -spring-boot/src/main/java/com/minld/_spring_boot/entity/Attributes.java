@@ -1,12 +1,14 @@
 package com.minld._spring_boot.entity;
 
+import java.util.Set;
+
+import jakarta.persistence.*;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Entity
 @Getter
@@ -23,7 +25,7 @@ public class Attributes {
     @Column(name = "name", nullable = false)
     String name;
 
-    @OneToMany(mappedBy = "attributes",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "attributes", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     Set<AttributesValues> attributesValues;
 
@@ -31,6 +33,4 @@ public class Attributes {
     @JsonBackReference
     @JoinColumn(name = "products_id")
     Products products;
-
-
 }

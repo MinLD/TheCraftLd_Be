@@ -2,12 +2,12 @@ package com.minld._spring_boot.controller;
 
 import java.util.List;
 
-import com.minld._spring_boot.dto.request.*;
 import jakarta.validation.Valid;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import com.minld._spring_boot.dto.request.*;
 import com.minld._spring_boot.dto.response.ApiResponse;
 import com.minld._spring_boot.dto.response.UserResponse;
 import com.minld._spring_boot.service.UserService;
@@ -31,6 +31,7 @@ public class UserController {
         apiResponse.setResult(userService.createUser(request));
         return apiResponse;
     }
+
     @PostMapping("/admin")
     ApiResponse<UserResponse> createUserAdmin(@RequestBody @Valid AdminCreationUsersRequest request) {
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();

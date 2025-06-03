@@ -1,14 +1,12 @@
 package com.minld._spring_boot.dto.response;
 
+import java.util.Set;
+
 import com.minld._spring_boot.entity.Attributes;
-import com.minld._spring_boot.entity.Categories;
 import com.minld._spring_boot.entity.MediaFile;
-import com.minld._spring_boot.entity.Seller;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Set;
 
 @Data
 @Builder
@@ -30,20 +28,20 @@ public class ProductsResponse {
 
     String trademark;
 
-    String origin ;
+    String origin;
 
     String style;
 
     Double quantity;
 
-    String  material;
+    String material;
 
     Set<MediaFile> images;
 
-    Seller seller;
+    Set<Attributes> attributes;
 
+    Long id_Seller;
 
-
-
+    //    Seller seller;
 
 }

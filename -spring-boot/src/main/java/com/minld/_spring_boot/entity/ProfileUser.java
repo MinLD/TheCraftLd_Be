@@ -1,11 +1,13 @@
 package com.minld._spring_boot.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -37,8 +39,8 @@ public class ProfileUser {
     private LocalDate dob;
     private String gender;
 
-//    @OneToOne
-//    @JoinColumn(name = "avatar_id")
-//    MediaFile avatar;
+    //    @OneToOne
+    //    @JoinColumn(name = "avatar_id")
+    //    MediaFile avatar;
 
 }

@@ -1,10 +1,11 @@
 package com.minld._spring_boot.dto.request;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import java.time.LocalDate;
+
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
@@ -12,16 +13,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SellerUpdationRequest {
-   String name;
+    String name;
 
-   String description;
+    String description;
 
-   String phone;
+    String phone;
 
-   private MultipartFile image;
+    private MultipartFile image;
 
-   private String taxCode; // Mã số thuế (nếu có)
+    private String taxCode; // Mã số thuế (nếu có)
 
-
-   private LocalDate updatedAt;
+    private LocalDate updatedAt;
 }

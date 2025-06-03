@@ -1,32 +1,21 @@
 package com.minld._spring_boot.service;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
 import com.minld._spring_boot.Repository.AddressRepository;
-import com.minld._spring_boot.Repository.CategoriesRepository;
-import com.minld._spring_boot.Repository.MediaReponsitory;
 import com.minld._spring_boot.Repository.UserRepository;
 import com.minld._spring_boot.dto.request.AddressCreationRequest;
-import com.minld._spring_boot.dto.request.CategoriesCreationRequest;
-import com.minld._spring_boot.dto.request.CategoriesUpdationRequest;
 import com.minld._spring_boot.dto.response.AddressResponse;
-import com.minld._spring_boot.dto.response.CategoriesResponse;
-import com.minld._spring_boot.dto.response.ProductsResponse;
 import com.minld._spring_boot.entity.*;
 import com.minld._spring_boot.exception.AppException;
 import com.minld._spring_boot.exception.ErrorCode;
 import com.minld._spring_boot.mapper.AddressMapper;
-import com.minld._spring_boot.mapper.CategoriesMapper;
-import com.minld._spring_boot.mapper.ProductsMapper;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -39,8 +28,7 @@ public class AddressService {
 
     public AddressResponse Create(AddressCreationRequest request) {
         var email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user =
-                userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         Seller seller = user.getSeller();
         if (seller == null) {
             throw new AppException(ErrorCode.SELLER_NOT_FOUND);
@@ -69,13 +57,13 @@ public class AddressService {
 
     public AddressResponse update(Long id, AddressCreationRequest request) {
         var email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user =
-                userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         Seller seller = user.getSeller();
         if (seller == null) {
             throw new AppException(ErrorCode.SELLER_NOT_FOUND);
         }
-        Address address = addressRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_FOUND));
+        Address address =
+                addressRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_FOUND));
         addressMapper.updateAddress(address, request);
 
         if (request.isDefault()) {
@@ -90,7 +78,4 @@ public class AddressService {
         log.info("Updated address {} with isDefault: {}", address.getId(), address.isDefault());
         return addressMapper.toAddressResponse(addressRepository.save(address));
     }
-
-
-
 }
