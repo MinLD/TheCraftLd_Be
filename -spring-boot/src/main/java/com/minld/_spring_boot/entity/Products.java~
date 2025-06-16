@@ -47,7 +47,7 @@ public class Products {
 
     Long id_Seller;
 
-    Integer views = 0;
+    Integer view;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     Set<MediaFile> images;

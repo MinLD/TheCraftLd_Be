@@ -69,16 +69,9 @@ public class SellerService {
         user.setRoles(roles);
         user.setSeller(seller);
         userRepository.save(user);
-        return new SellerResponse(
-                seller.getId(),
-                seller.getName(),
-                seller.getDescription(),
-                seller.getImage(),
-                seller.getPhone(),
-                seller.getTaxCode(),
-                seller.getCreatedAt(),
-                seller.getUpdatedAt());
+        return new SellerResponse(seller);
     }
+
 
     public SellerResponse update(Long id, SellerUpdationRequest request) throws IOException {
 

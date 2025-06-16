@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.minld._spring_boot.entity.MediaFile;
 
+import com.minld._spring_boot.entity.Seller;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,6 +20,8 @@ public class SellerResponse {
 
     String description;
 
+    Integer productsCount = 0;
+
     MediaFile image;
 
     String phone;
@@ -28,4 +31,8 @@ public class SellerResponse {
     private LocalDate createdAt; // Ngày tạo công ty
 
     private LocalDate updatedAt;
+
+
+    public SellerResponse(Seller seller) {
+    }
 }

@@ -40,6 +40,10 @@ public class ProductsResponse {
 
     Set<Attributes> attributes;
 
+    Integer views;
+
+
+
     Long id_Seller;
 
     //    Seller seller;

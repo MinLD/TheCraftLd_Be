@@ -1,11 +1,16 @@
 package com.minld._spring_boot.Repository;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.minld._spring_boot.entity.Products;
+import org.springframework.data.jpa.repository.Query;
 
 public interface ProductsRepository extends JpaRepository<Products, Long> {
     Set<Products> findBySellerIdAndCategoriesId(Long sellerId, Long categoriesId);
+    List<Products> findTop5ByCategories_IdOrderByViewsDesc(Long categoryId);
+    @Query("SELECT COUNT(p) FROM Products p WHERE p.id_Seller = :sellerId")
+    long countBySellerId(Long sellerId);
 }

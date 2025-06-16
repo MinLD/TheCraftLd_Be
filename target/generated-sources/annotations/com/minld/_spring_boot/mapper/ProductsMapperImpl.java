@@ -69,6 +69,7 @@ public class ProductsMapperImpl implements ProductsMapper {
         if ( set1 != null ) {
             productsResponse.attributes( new LinkedHashSet<Attributes>( set1 ) );
         }
+        productsResponse.views( products.getViews() );
         productsResponse.id_Seller( products.getId_Seller() );
 
         return productsResponse.build();

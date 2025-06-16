@@ -44,6 +44,7 @@ public class SellerMapperImpl implements SellerMapper {
         sellerResponse.id( seller.getId() );
         sellerResponse.name( seller.getName() );
         sellerResponse.description( seller.getDescription() );
+        sellerResponse.productsCount( seller.getProductsCount() );
         sellerResponse.image( seller.getImage() );
         sellerResponse.phone( seller.getPhone() );
         sellerResponse.taxCode( seller.getTaxCode() );

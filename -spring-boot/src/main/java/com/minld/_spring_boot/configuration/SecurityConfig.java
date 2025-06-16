@@ -33,10 +33,13 @@ public class SecurityConfig {
 
     };
     private final String[] PUBLIC_ENDPOINTS_GET = {
+            "/products/myseller/{id_Seller}",
+            "/products/{id_Seller}/{id}",
             "/categories",
             "/categories/products/{id}",
             "/products/by/{id}",
             "/seller/{id}",
+            "/products/topview",
     };
     @Autowired
     private CustomJwtDecoder customjwtDecoder;

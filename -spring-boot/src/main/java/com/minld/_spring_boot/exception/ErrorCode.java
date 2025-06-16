@@ -38,6 +38,8 @@ public enum ErrorCode {
     STYLE_INVALID("Style must be at lest {min} characters", 1027, HttpStatus.BAD_REQUEST),
     MATERIAL_INVALID("Material must be at lest {min} characters", 1028, HttpStatus.BAD_REQUEST),
     MEDIA_NOT_FOUND("Media not found", 1029, HttpStatus.NOT_FOUND),
+    INSUFFICIENT_STOCK("Insufficient stock", 1030, HttpStatus.BAD_REQUEST),
+    ATTRIBUTES_VALUE_NOT_FOUND("Attributes value not found", 1031, HttpStatus.NOT_FOUND),
     ;
 
     ErrorCode(String message, int code, HttpStatusCode statusCode) {

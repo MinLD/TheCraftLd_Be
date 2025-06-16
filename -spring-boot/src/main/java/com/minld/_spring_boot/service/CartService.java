@@ -1,0 +1,146 @@
+package com.minld._spring_boot.service;
+
+import com.minld._spring_boot.Repository.*;
+import com.minld._spring_boot.constant.PredefindRole;
+import com.minld._spring_boot.dto.request.CartCreationRequest;
+import com.minld._spring_boot.dto.request.SellerCreationRequest;
+import com.minld._spring_boot.dto.request.SellerUpdationRequest;
+import com.minld._spring_boot.dto.response.CartResponse;
+import com.minld._spring_boot.dto.response.SellerResponse;
+import com.minld._spring_boot.entity.*;
+import com.minld._spring_boot.exception.AppException;
+import com.minld._spring_boot.exception.ErrorCode;
+import com.minld._spring_boot.mapper.CartMapper;
+import com.minld._spring_boot.mapper.SellerMapper;
+import com.minld._spring_boot.mapper.UserMapper;
+import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
+
+@Slf4j
+@Service
+@Transactional
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class CartService {
+    CartRepository cartRepository;
+    ProductsRepository productRepository;
+    UserRepository userRepository;
+    CartMapper cartMapper;
+    CartItemRepository cartItemRepository;
+    AttributesValueRepository attributesValueRepository;
+    ProductOrderRepository productOrderRepository;
+
+
+
+    public CartResponse addItemToCart(CartCreationRequest request) {
+        var email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        if (user.getCart() == null) {
+            Cart cart = Cart.builder()
+                    .user(user)
+                    .createdAt(LocalDate.now())
+                    .updatedAt(LocalDate.now())
+                    .items(new HashSet<>())
+                    .build();
+            user.setCart(cart);
+        }
+        Cart cart = user.getCart();
+
+        Products product = productRepository.findById(request.getId_product())
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        if (product.getQuantity() < request.getQuantity()) {
+            throw new AppException(ErrorCode.INSUFFICIENT_STOCK);
+        }
+
+        if (request.getId_atributes_value() != null && request.getId_atributes_value() <= 0) {
+            throw new AppException(ErrorCode.ATTRIBUTE_NOT_FOUND);
+        }
+
+        Optional<CartItem> existingItem = cart.getItems().stream()
+                .filter(item -> item.getProducts_order().getId_product().equals(request.getId_product())
+                        && Objects.equals(item.getProducts_order().getId_atributes_value(), request.getId_atributes_value()))
+                .findFirst();
+
+        if (existingItem.isPresent()) {
+            CartItem item = existingItem.get();
+            if (item.getQuantity() + request.getQuantity() > product.getQuantity()) {
+                throw new AppException(ErrorCode.INSUFFICIENT_STOCK);
+            }
+            item.setQuantity(item.getQuantity() + request.getQuantity());
+            item.setUnitPrice(product.getPrice() * item.getQuantity());
+            cartItemRepository.save(item);
+        } else {
+            Products_Order products_order = new Products_Order();
+            products_order.setId_product(request.getId_product());
+            products_order.setName(product.getTitle());
+            products_order.setPrice(product.getPrice());
+
+            if (request.getId_atributes_value() != null) {
+                AttributesValues attributesValues = attributesValueRepository
+                        .findById(request.getId_atributes_value())
+                        .orElseThrow(() -> new AppException(ErrorCode.ATTRIBUTES_VALUE_NOT_FOUND));
+                products_order.setId_atributes_value(request.getId_atributes_value());
+                products_order.setAtributes_Value(attributesValues.getName() != null ? attributesValues.getName() : "");
+                products_order.setImage(attributesValues.getImage() != null ? attributesValues.getImage() : null);
+            }
+
+
+                productOrderRepository.save(products_order);
+                CartItem item = new CartItem();
+                item.setCart(cart);
+                item.setProducts_order(products_order);
+                item.setQuantity(request.getQuantity());
+                item.setUnitPrice(product.getPrice() * item.getQuantity());
+                cart.getItems().add(item);
+                cartItemRepository.save(item);
+
+        }
+        cart.setUpdatedAt(LocalDate.now());
+
+        return cartMapper.toCartResponse(cartRepository.save(cart));
+    }
+
+    @Transactional()
+    public CartResponse getCart() {
+        var email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+
+
+        // Kiểm tra cart
+        Cart cart = user.getCart();
+        if (cart == null) {
+            throw new AppException(ErrorCode.SELLER_NOT_FOUND);
+            // Hoặc tạo cart mới tùy yêu cầu:
+            /*
+            cart = new Cart();
+            cart.setUser(user);
+            cart.setCreatedAt(LocalDateTime.now());
+            cart.setUpdatedAt(LocalDateTime.now());
+            user.setCart(cart);
+            userRepository.save(user);
+            */
+        }
+
+        return cartMapper.toCartResponse(cart);
+
+    }
+
+}

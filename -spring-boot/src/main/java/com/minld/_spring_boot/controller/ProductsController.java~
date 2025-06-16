@@ -1,7 +1,9 @@
 package com.minld._spring_boot.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import com.minld._spring_boot.dto.response.CategoriesResponse;
 import org.springframework.web.bind.annotation.*;
 
 import com.minld._spring_boot.dto.request.ProductsCreationRequest;
@@ -31,10 +33,10 @@ public class ProductsController {
                 .build();
     }
 
-    @GetMapping()
-    ApiResponse<List<ProductsResponse>> getAllProducts() {
+    @GetMapping("/myseller/{id_Seller}")
+    ApiResponse<List<ProductsResponse>> getAllProducts(@PathVariable Long id_Seller) {
         return ApiResponse.<List<ProductsResponse>>builder()
-                .result(productsService.getAllProducts())
+                .result(productsService.getAllProducts(id_Seller))
                 .build();
     }
 
@@ -44,10 +46,10 @@ public class ProductsController {
         return ApiResponse.<Void>builder().result(productsService.delete(id)).build();
     }
 
-    @GetMapping("/seller/{categoriesId}")
-    public ApiResponse<List<ProductsResponse>> getProductsBySellerAndCategory(@PathVariable Long categoriesId) {
+    @GetMapping("/{id_Seller}/{categoriesId}")
+    public ApiResponse<List<ProductsResponse>> getProductsBySellerAndCategory(@PathVariable Long id_Seller, Long categoriesId) {
         return ApiResponse.<List<ProductsResponse>>builder()
-                .result(productsService.getProductsBySellerAndCategory(categoriesId))
+                .result(productsService.getProductsBySellerAndCategory(id_Seller,categoriesId))
                 .build();
     }
 
@@ -57,10 +59,17 @@ public class ProductsController {
                 .result(productsService.update(id, request))
                 .build();
     }
-    @GetMapping("/By/{id}")
+    @GetMapping("/by/{id}")
     public ApiResponse<ProductsResponse> getProductsById(@PathVariable Long id) {
         return ApiResponse.<ProductsResponse>builder()
                 .result(productsService.getProductsById(id))
+                .build();
+    }
+
+    @GetMapping("/topview")
+    public ApiResponse <List<ProductsResponse>> getTopViewProductsByCategory() {
+        return ApiResponse. <List<ProductsResponse>>builder()
+                .result(productsService.getTopViewProductsByCategory())
                 .build();
     }
 }

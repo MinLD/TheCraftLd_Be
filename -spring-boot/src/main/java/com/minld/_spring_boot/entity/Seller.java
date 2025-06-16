@@ -39,6 +39,9 @@ public class Seller {
     @Column(name = "phone")
     String phone = null;
 
+    @Column(name = "products_count")
+    Integer productsCount = 0;
+
     @OneToOne()
     @JsonBackReference
     @JoinColumn(name = "user_id")

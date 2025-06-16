@@ -158,8 +158,8 @@ public class ProductsService {
         return null;
     }
 
-    public List<ProductsResponse> getProductsBySellerAndCategory(Long id_Seller,Long categoriesId) {
-       Seller seller = sellerReponsitory.findById(id_Seller).orElseThrow(() -> new AppException(ErrorCode.SELLER_NOT_FOUND));
+    public List<ProductsResponse> getProductsBySellerAndCategory(Long categoriesId) {
+       Seller seller = sellerReponsitory.findById(categoriesId).orElseThrow(() -> new AppException(ErrorCode.SELLER_NOT_FOUND));
         var sellerId = seller.getId();
         return productsRepository.findBySellerIdAndCategoriesId(sellerId, categoriesId).stream()
                 .map(productsMapper::toProductsResponse)

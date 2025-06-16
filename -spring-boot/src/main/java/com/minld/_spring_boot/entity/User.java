@@ -47,6 +47,10 @@ public class User {
     @JsonManagedReference
     Seller seller;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    Cart cart;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role")
     Set<Role> roles = new HashSet<>();
