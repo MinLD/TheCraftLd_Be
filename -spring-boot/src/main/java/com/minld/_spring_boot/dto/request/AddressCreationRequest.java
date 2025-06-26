@@ -20,8 +20,8 @@ public class AddressCreationRequest {
 
     String detailsAddress;
 
-    @JsonProperty("isDefault")
-    boolean isDefault;
+//    @JsonProperty("isDefault")
+    boolean AddressDefault;
 
     String isType;
 }

@@ -21,5 +21,6 @@ public class UserResponse {
     Boolean isActive;
     ProfileUser profileUser;
     Set<RoleResponse> roles;
+    Set<AddressResponse> addresses;
     Seller seller;
 }

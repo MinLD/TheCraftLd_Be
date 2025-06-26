@@ -32,7 +32,7 @@ public class Address {
     String detailsAddress;
 
 
-    @Column(name = "address_default")
+    @Column(name = "AddressDefault")
     boolean AddressDefault;
 
     @Column(name = "is_type")

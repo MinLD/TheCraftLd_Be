@@ -25,10 +25,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -43,9 +40,11 @@ public class CartService {
     CartItemRepository cartItemRepository;
     AttributesValueRepository attributesValueRepository;
     ProductOrderRepository productOrderRepository;
+    AttributesRepository   attributesRepository;
 
 
 
+    @Transactional
     public CartResponse addItemToCart(CartCreationRequest request) {
         var email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email)
@@ -59,6 +58,7 @@ public class CartService {
                     .items(new HashSet<>())
                     .build();
             user.setCart(cart);
+            cartRepository.save(cart);
         }
         Cart cart = user.getCart();
 
@@ -91,23 +91,42 @@ public class CartService {
             products_order.setId_product(request.getId_product());
             products_order.setName(product.getTitle());
             products_order.setPrice(product.getPrice());
+            products_order.setId_user(user.getId());
+            products_order.setId_seller(product.getId_Seller());
 
             if (request.getId_atributes_value() != null) {
                 AttributesValues attributesValues = attributesValueRepository
                         .findById(request.getId_atributes_value())
                         .orElseThrow(() -> new AppException(ErrorCode.ATTRIBUTES_VALUE_NOT_FOUND));
+                Attributes attributes = attributesRepository
+                        .findById(request.getId_atributes_name())
+                        .orElseThrow(() -> new AppException(ErrorCode.ATTRIBUTE_NOT_FOUND));
+                products_order.setAtributes_name(attributes.getName());
+                products_order.setId_atributes_name(attributes.getId());
                 products_order.setId_atributes_value(request.getId_atributes_value());
                 products_order.setAtributes_Value(attributesValues.getName() != null ? attributesValues.getName() : "");
-                products_order.setImage(attributesValues.getImage() != null ? attributesValues.getImage() : null);
+                Set<MediaFile> images = new HashSet<>();
+                if (attributesValues.getImage() != null) {
+                    images.add(attributesValues.getImage());
+                }
+                products_order.setImages(images);
             }
-
-
+            else {
+                // Gán images từ product
+                Set<MediaFile> images = new HashSet<>();
+                if (product.getImages() != null) {
+                    for (MediaFile mediaFile : product.getImages()) {
+                            images.add(mediaFile);
+                    }
+                }
+                products_order.setImages(images);
+            }
                 productOrderRepository.save(products_order);
                 CartItem item = new CartItem();
                 item.setCart(cart);
                 item.setProducts_order(products_order);
                 item.setQuantity(request.getQuantity());
-                item.setUnitPrice(product.getPrice());
+                item.setUnitPrice(product.getPrice() * item.getQuantity());
                 cart.getItems().add(item);
                 cartItemRepository.save(item);
 
@@ -141,6 +160,21 @@ public class CartService {
 
         return cartMapper.toCartResponse(cart);
 
+    }
+
+    
+    public void deleteCartItem(Long id) {
+        var email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+     Cart cart = user.getCart();
+        CartItem cartItem = cartItemRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.CART_ITEM_NOT_FOUND));
+
+        if (!cartItem.getCart().getId().equals(cart.getId())) {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
+        cartItemRepository.delete(cartItem);
     }
 
 }

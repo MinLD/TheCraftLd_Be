@@ -64,6 +64,5 @@ public class Seller {
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
-    @Column(name = "order_placeds")
     Set<OrderPlaced> orderPlaceds = new HashSet<>();
 }

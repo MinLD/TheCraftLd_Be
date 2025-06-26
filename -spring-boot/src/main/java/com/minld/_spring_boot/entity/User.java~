@@ -57,6 +57,7 @@ public class User {
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role")
     @JsonManagedReference
     Set<Order> orders = new HashSet<>();
 

@@ -1,0 +1,17 @@
+package com.minld._spring_boot.dto.request;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.util.Set;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class OrderItemCreationRequest {
+
+    private Long id_products_order;
+    private Integer quantity;
+}

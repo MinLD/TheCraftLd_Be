@@ -12,6 +12,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddressResponse {
 
+    Long id;
+
     String name;
 
     String phone;
@@ -20,8 +22,8 @@ public class AddressResponse {
 
     String detailsAddress;
 
-    @JsonProperty("isDefault")
-    boolean isDefault;
+//    @JsonProperty("isDefault")
+    boolean AddressDefault;
 
     String isType;
 }

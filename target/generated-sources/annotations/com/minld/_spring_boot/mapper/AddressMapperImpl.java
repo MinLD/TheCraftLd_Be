@@ -38,6 +38,7 @@ public class AddressMapperImpl implements AddressMapper {
 
         AddressResponse.AddressResponseBuilder addressResponse = AddressResponse.builder();
 
+        addressResponse.id( address.getId() );
         addressResponse.name( address.getName() );
         addressResponse.phone( address.getPhone() );
         addressResponse.address( address.getAddress() );
@@ -65,7 +66,7 @@ public class AddressMapperImpl implements AddressMapper {
         if ( request.getDetailsAddress() != null ) {
             address.setDetailsAddress( request.getDetailsAddress() );
         }
-        address.setDefault( request.isDefault() );
+        address.setAddressDefault( request.isAddressDefault() );
         if ( request.getIsType() != null ) {
             address.setIsType( request.getIsType() );
         }

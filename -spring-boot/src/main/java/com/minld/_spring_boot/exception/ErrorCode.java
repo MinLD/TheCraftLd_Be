@@ -40,6 +40,8 @@ public enum ErrorCode {
     MEDIA_NOT_FOUND("Media not found", 1029, HttpStatus.NOT_FOUND),
     INSUFFICIENT_STOCK("Insufficient stock", 1030, HttpStatus.BAD_REQUEST),
     ATTRIBUTES_VALUE_NOT_FOUND("Attributes value not found", 1031, HttpStatus.NOT_FOUND),
+    ORDER_NOT_FOUND("Order value not found", 1032, HttpStatus.NOT_FOUND),
+    CART_ITEM_NOT_FOUND("Cart item not found", 1033, HttpStatus.NOT_FOUND),
     ;
 
     ErrorCode(String message, int code, HttpStatusCode statusCode) {

@@ -32,10 +32,4 @@ public class CartController {
    public ApiResponse<CartResponse> getCart() {
        return ApiResponse.<CartResponse>builder().result(cartService.getCart()).build();
    }
-
-   @DeleteMapping("/{id}")
-   public ApiResponse<Void> deleteCartItem(@PathVariable Long id) {
-       cartService.deleteCartItem(id);
-       return ApiResponse.<Void>builder().build();
-   }
 }

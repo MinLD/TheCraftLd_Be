@@ -20,4 +20,6 @@ public class CartCreationRequest {
 
 
     Long id_atributes_value ;
+
+    Long id_atributes_name;
 }

@@ -2,9 +2,11 @@ package com.minld._spring_boot.mapper;
 
 import com.minld._spring_boot.dto.request.UserCreationRequest;
 import com.minld._spring_boot.dto.request.UserUpdationRequest;
+import com.minld._spring_boot.dto.response.AddressResponse;
 import com.minld._spring_boot.dto.response.PermissionResponse;
 import com.minld._spring_boot.dto.response.RoleResponse;
 import com.minld._spring_boot.dto.response.UserResponse;
+import com.minld._spring_boot.entity.Address;
 import com.minld._spring_boot.entity.Permission;
 import com.minld._spring_boot.entity.Role;
 import com.minld._spring_boot.entity.User;
@@ -50,6 +52,7 @@ public class UserMapperImpl implements UserMapper {
         userResponse.isActive( user.getIsActive() );
         userResponse.profileUser( user.getProfileUser() );
         userResponse.roles( roleSetToRoleResponseSet( user.getRoles() ) );
+        userResponse.addresses( addressSetToAddressResponseSet( user.getAddresses() ) );
         userResponse.seller( user.getSeller() );
 
         return userResponse.build();
@@ -129,6 +132,36 @@ public class UserMapperImpl implements UserMapper {
         Set<RoleResponse> set1 = new LinkedHashSet<RoleResponse>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( Role role : set ) {
             set1.add( roleToRoleResponse( role ) );
+        }
+
+        return set1;
+    }
+
+    protected AddressResponse addressToAddressResponse(Address address) {
+        if ( address == null ) {
+            return null;
+        }
+
+        AddressResponse.AddressResponseBuilder addressResponse = AddressResponse.builder();
+
+        addressResponse.id( address.getId() );
+        addressResponse.name( address.getName() );
+        addressResponse.phone( address.getPhone() );
+        addressResponse.address( address.getAddress() );
+        addressResponse.detailsAddress( address.getDetailsAddress() );
+        addressResponse.isType( address.getIsType() );
+
+        return addressResponse.build();
+    }
+
+    protected Set<AddressResponse> addressSetToAddressResponseSet(Set<Address> set) {
+        if ( set == null ) {
+            return null;
+        }
+
+        Set<AddressResponse> set1 = new LinkedHashSet<AddressResponse>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        for ( Address address : set ) {
+            set1.add( addressToAddressResponse( address ) );
         }
 
         return set1;

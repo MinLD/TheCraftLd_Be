@@ -22,10 +22,16 @@ import lombok.extern.slf4j.Slf4j;
 public class AddressController {
     AddressService addressService;
 
-    @PostMapping()
-    public ApiResponse<AddressResponse> Create(@Valid @RequestBody AddressCreationRequest request) {
+//    @PostMapping("/seller")
+//    public ApiResponse<AddressResponse> CreateAddressSeller(@Valid @RequestBody AddressCreationRequest request) {
+//        return ApiResponse.<AddressResponse>builder()
+//                .result(addressService.CreateAddressSeller(request))
+//                .build();
+//    }
+    @PostMapping("/user")
+    public ApiResponse<AddressResponse> CreateAddressUser(@Valid @RequestBody AddressCreationRequest request) {
         return ApiResponse.<AddressResponse>builder()
-                .result(addressService.Create(request))
+                .result(addressService.CreateAddressUser(request))
                 .build();
     }
 
