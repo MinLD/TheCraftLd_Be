@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -36,12 +37,26 @@ public class Products_Order {
 
     private String atributes_Value;
 
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "attributes_values_id")
+//    private Set<AttributesValues> attributesValuesProduct;
+
     private Double price;
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "image_id")
-    private Set<MediaFile> images;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<MediaFile> images = new HashSet<>();
+    //Nếu cascade = CascadeType.ALL hoặc orphanRemoval = true được bật trong Products_Order,
+    // việc thay đổi images có thể dẫn đến xóa bản ghi MediaFile.
+    // Nhưng vì MediaFile đang được AttributesValues tham chiếu, lỗi khóa ngoại xảy ra.
+
+//Giải pháp:
+//
+//Xóa orphanRemoval = true hoặc giảm phạm vi cascade (ví dụ: chỉ dùng CascadeType.PERSIST và CascadeType.MERGE).
+//Đảm bảo rằng MediaFile không bị xóa khi cập nhật products_order.
+
+
+
 
 }

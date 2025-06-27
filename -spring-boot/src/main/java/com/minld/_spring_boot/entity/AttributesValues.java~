@@ -35,6 +35,6 @@ public class AttributesValues {
 
 
     @OneToOne
-    @JoinColumn(name = "file_id")
+    @JoinColumn(name = "file_id", nullable = true)
     MediaFile image;
 }

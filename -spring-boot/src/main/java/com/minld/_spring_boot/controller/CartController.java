@@ -2,7 +2,10 @@ package com.minld._spring_boot.controller;
 
 import com.minld._spring_boot.dto.request.CartCreationRequest;
 import com.minld._spring_boot.dto.request.RoleRequest;
+import com.minld._spring_boot.dto.request.UpdationCartItemRequest;
+import com.minld._spring_boot.dto.request.UpdationQuantityCartRequest;
 import com.minld._spring_boot.dto.response.ApiResponse;
+import com.minld._spring_boot.dto.response.AttributesValueResponse;
 import com.minld._spring_boot.dto.response.CartResponse;
 import com.minld._spring_boot.dto.response.RoleResponse;
 import com.minld._spring_boot.entity.Cart;
@@ -15,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -37,5 +41,19 @@ public class CartController {
    public ApiResponse<Void> deleteCartItem(@PathVariable Long id) {
        cartService.deleteCartItem(id);
        return ApiResponse.<Void>builder().build();
+   }
+
+   @PostMapping("/updateQuantity")
+   public ApiResponse<Void> UpdateQuantity(@RequestBody UpdationQuantityCartRequest request) {
+       return ApiResponse.<Void>builder().result(cartService.UpdateQuantity(request.getId(), request.getQuantity())).build();
+   }
+   @PostMapping("/updateCartItem")
+   public ApiResponse<Void> UpdateCartItem(@RequestBody UpdationCartItemRequest request) {
+       return ApiResponse.<Void>builder().result(cartService.UpdateCartItem(request.getId(), request.getId_atributes_value())).build();
+   }
+
+   @GetMapping("/AtributesValue/{id}")
+   public ApiResponse<Set<AttributesValueResponse>> getAtributesValue(@PathVariable Long id) {
+       return ApiResponse.<Set<AttributesValueResponse>>builder().result(cartService.getAttributes(id)).build();
    }
 }
